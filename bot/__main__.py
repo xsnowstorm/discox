@@ -145,20 +145,6 @@ async def parse_usage_text(
 
 async def match_type(type: str, arg: str, message: discord.Message) -> any:
     match type:
-        case "int":
-            if arg.removeprefix("-").isdigit():
-                return int(arg)
-            else:
-                await logger.send_error(f"'{arg}' is not an integer.", message)
-                raise ValueError()
-
-        case "float":
-            if re.match("^-?\d+(?:\.\d+)$", arg) is not None:
-                return float(arg)
-            else:
-                await logger.send_error(f"'{arg}' is not a float.", message)
-                raise ValueError()
-
         case "bool":
             if arg.lower() == "true":
                 return True
@@ -166,6 +152,20 @@ async def match_type(type: str, arg: str, message: discord.Message) -> any:
                 return False
             else:
                 await logger.send_error(f"'{arg}' is not a boolean.", message)
+                raise ValueError()
+		
+        case "float":
+            if re.match("^-?\d+(?:\.\d+)$", arg) is not None:
+                return float(arg)
+            else:
+                await logger.send_error(f"'{arg}' is not a float.", message)
+                raise ValueError()
+		
+        case "int":
+            if arg.removeprefix("-").isdigit():
+                return int(arg)
+            else:
+                await logger.send_error(f"'{arg}' is not an integer.", message)
                 raise ValueError()
 
         case "member":
